@@ -217,7 +217,7 @@ router.route('/reviews')
                         foreignField: "_id",
                         as: "movie"
                     }
-            }]).select("movie username rating").exec(function (err, reviews) {
+            }]).select("movie username name rating quote").exec(function (err, reviews) {
             if (err) {
                 res.send(err);
             }
