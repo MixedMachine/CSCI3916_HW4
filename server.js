@@ -128,17 +128,47 @@ router.route('/movies')
         console.log("GET| ", req.body);
         res = res.status(200);
 
-        // search in DB using body as filter
-        Movie.find(req.body).select("title year genre actors").exec(function (err, movies) {
-            if (err) {
-                res.send(err);
-            }
-            let o = getJSONObjectForMovieRequirement(req);
-            o.message = "GET movies";
-            o.data = movies;
-            o.success = true;
-            res.json(o);
-        });
+        // Check if user has the reviews field
+        if (req.body.reviews === null) {
+            Movie.find(req.body).select("title year genre actors").exec(function (err, movies) {
+                if (err) {
+                    res.send(err);
+                }
+                let o = getJSONObjectForMovieRequirement(req);
+                o.message = "GET movies";
+                o.data = movies;
+                o.success = true;
+                res.json(o);
+            });
+        }
+        // reviews is not null, so must check if it's true
+        if (req.body.reviews === true) {
+            let movie = req.body;
+            movie.reviews = null;
+            Movie.aggregate([
+                {
+                    $match: movie
+                },
+                {
+                    $lookup:
+                        {
+                            from: "reviews",
+                            localField: "_id",
+                            foreignField: "movieId",
+                            as: "reviews"
+                        }
+                }]).exec(function (err, movies) {
+                if (err) {
+                    res.send(err);
+                }
+                let o = getJSONObjectForMovieRequirement(req);
+                o.message = "GET movies";
+                o.data = movies;
+                o.success = true;
+                res.json(o);
+            });
+        }
+
     })
     .put(authJwtController.isAuthenticated, function (req, res) { // Update
         console.log("PUT|", req.body);
@@ -217,6 +247,12 @@ router.route('/reviews')
                         localField: "movieId",
                         foreignField: "_id",
                         as: "movie"
+                    }
+            },
+            {$project:
+                    {
+                        "review.movie.actors": 0,
+                        "review.movie.genre": 0
                     }
             }]).exec(function (err, reviews) {
             if (err) {
