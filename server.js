@@ -142,33 +142,34 @@ router.route('/movies')
                 o.success = true;
                 res.json(o);
             });
+        } else {
+            console.log("Getting reviews");
+            // reviews is not null, so must check if it's true
+            let movie = req.body;
+            movie.reviews = null;
+            Movie.aggregate([
+                {
+                    $match: movie
+                },
+                {
+                    $lookup:
+                        {
+                            from: "reviews",
+                            localField: "_id",
+                            foreignField: "movieId",
+                            as: "reviews"
+                        }
+                }]).exec(function (err, movies) {
+                if (err) {
+                    res.send(err);
+                }
+                let o = getJSONObjectForMovieRequirement(req);
+                o.message = "GET movies";
+                o.data = movies;
+                o.success = true;
+                res.json(o);
+            });
         }
-        console.log("Getting reviews");
-        // reviews is not null, so must check if it's true
-        let movie = req.body;
-        movie.reviews = null;
-        Movie.aggregate([
-            {
-                $match: movie
-            },
-            {
-                $lookup:
-                    {
-                        from: "reviews",
-                        localField: "_id",
-                        foreignField: "movieId",
-                        as: "reviews"
-                    }
-            }]).exec(function (err, movies) {
-            if (err) {
-                res.send(err);
-            }
-            let o = getJSONObjectForMovieRequirement(req);
-            o.message = "GET movies";
-            o.data = movies;
-            o.success = true;
-            res.json(o);
-        });
     })
     .put(authJwtController.isAuthenticated, function (req, res) { // Update
         console.log("PUT|", req.body);
