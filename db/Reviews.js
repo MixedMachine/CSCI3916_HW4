@@ -12,7 +12,7 @@ try {
 
 // review schema
 let ReviewSchema = new Schema({
-    movie: { type: String, required: true },
+    movieID: { type: String, required: true },
     username: { type: String, required: true },
     rating: { type: Number, required: true },
     name: String,
