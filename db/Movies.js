@@ -5,9 +5,9 @@ mongoose.Promise = global.Promise;
 
 try {
     mongoose.connect( `${process.env.DB}Movies`, {useNewUrlParser: true, useUnifiedTopology: true}, () =>
-        console.log("connected"));
+        console.log("Movie collection connected"));
 }catch (error) {
-    console.log("could not connect");
+    console.log("Movie collection could not connect");
 }
 
 // movie schema

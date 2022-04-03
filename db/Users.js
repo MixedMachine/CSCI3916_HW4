@@ -6,9 +6,9 @@ mongoose.Promise = global.Promise;
 
 try {
     mongoose.connect(`${process.env.DB}Users`, {useNewUrlParser: true, useUnifiedTopology: true}, () =>
-        console.log("connected"));
+        console.log("User collection connected"));
 }catch (error) {
-    console.log("could not connect");
+    console.log("User collection could not connect");
 }
 
 //user schema

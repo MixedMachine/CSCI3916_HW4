@@ -5,9 +5,9 @@ mongoose.Promise = global.Promise;
 
 try {
     mongoose.connect( `${process.env.DB}Reviews`, {useNewUrlParser: true, useUnifiedTopology: true}, () =>
-        console.log("connected"));
+        console.log("Reviews collection connected"));
 }catch (error) {
-    console.log("could not connect");
+    console.log("Reviews collection could not connect");
 }
 
 // review schema
