@@ -130,7 +130,7 @@ router.route('/movies')
         res = res.status(200);
 
         // Check if user has the reviews field
-        if (req.body.reviews === undefined || req.body.reviews === null) {
+        if (!req.body.hasOwnProperty("reviews")) {
             console.log("Not getting reviews");
             Movie.find(req.body).select("title year genre actors").exec(function (err, movies) {
                 if (err) {
