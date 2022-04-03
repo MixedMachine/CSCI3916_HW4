@@ -211,12 +211,11 @@ router.route('/reviews')
 
         // search in DB using body as filter
         Review.aggregate([
-            { "$project": { "movieObjId": { "$toObjectId": "$movieId" } } },
-            { $lookup:
+            { "$addFields": { "movieId": { "$toString": "$_id" }}},            { $lookup:
                     {
                         from: "movies",
-                        localField: "movieId",
-                        foreignField: "$_id",
+                        localField: "movie",
+                        foreignField: "movieId",
                         as: "movie"
                     }
             }]).exec(function (err, reviews) {
