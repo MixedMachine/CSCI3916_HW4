@@ -130,7 +130,7 @@ router.route('/movies')
         res = res.status(200);
 
         // Check if user has the reviews field
-        if (req.body.reviews === null || req.body.reviews === false) {
+        if (req.body.reviews === undefined || req.body.reviews === false) {
             Movie.find(req.body).select("title year genre actors").exec(function (err, movies) {
                 if (err) {
                     res.send(err);
