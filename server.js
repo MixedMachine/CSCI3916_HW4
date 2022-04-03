@@ -126,10 +126,11 @@ router.route('/movies')
     })
     .get(authJwtController.isAuthenticated, function (req, res) { // Retrieve
         console.log("GET| ", req.body);
+        console.log("reviews| ", req.body.reviews)
         res = res.status(200);
 
         // Check if user has the reviews field
-        if (req.body.reviews === null) {
+        if (req.body.reviews === null || req.body.reviews === false) {
             Movie.find(req.body).select("title year genre actors").exec(function (err, movies) {
                 if (err) {
                     res.send(err);
@@ -142,33 +143,30 @@ router.route('/movies')
             });
         }
         // reviews is not null, so must check if it's true
-        if (req.body.reviews === true) {
-            let movie = req.body;
-            movie.reviews = null;
-            Movie.aggregate([
-                {
-                    $match: movie
-                },
-                {
-                    $lookup:
-                        {
-                            from: "reviews",
-                            localField: "_id",
-                            foreignField: "movieId",
-                            as: "reviews"
-                        }
-                }]).exec(function (err, movies) {
-                if (err) {
-                    res.send(err);
-                }
-                let o = getJSONObjectForMovieRequirement(req);
-                o.message = "GET movies";
-                o.data = movies;
-                o.success = true;
-                res.json(o);
-            });
-        }
-
+        let movie = req.body;
+        movie.reviews = null;
+        Movie.aggregate([
+            {
+                $match: movie
+            },
+            {
+                $lookup:
+                    {
+                        from: "reviews",
+                        localField: "_id",
+                        foreignField: "movieId",
+                        as: "reviews"
+                    }
+            }]).exec(function (err, movies) {
+            if (err) {
+                res.send(err);
+            }
+            let o = getJSONObjectForMovieRequirement(req);
+            o.message = "GET movies";
+            o.data = movies;
+            o.success = true;
+            res.json(o);
+        });
     })
     .put(authJwtController.isAuthenticated, function (req, res) { // Update
         console.log("PUT|", req.body);
