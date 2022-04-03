@@ -45,6 +45,13 @@ function getJSONObjectForMovieRequirement(req) {
 /***********************************************************************************************************************
  * User routing for registering new users and signing in users to receive a JWT token
  **********************************************************************************************************************/
+router.get('/', function (req, res) {            let o = getJSONObjectForMovieRequirement(req);
+    o.message = "Connection test";
+    o.success = true;
+    res.json(o);
+});
+
+
 router.post('/signup', function (req, res) {
     if (!req.body.username || !req.body.password) {
         res.json({success: false, msg: 'Please include both username and password to signup.'})
