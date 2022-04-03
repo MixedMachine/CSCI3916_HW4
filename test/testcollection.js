@@ -3,7 +3,7 @@ require('dotenv').config({path:envPath});
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let server = require('../server');
-let User = require('../Users');
+let User = require('../db/Users');
 chai.should();
 
 chai.use(chaiHttp);

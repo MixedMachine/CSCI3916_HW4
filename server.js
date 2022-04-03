@@ -12,13 +12,14 @@ let passport = require('passport');
 let authJwtController = require('./auth_jwt');
 let jwt = require('jsonwebtoken');
 let cors = require('cors');
-let User = require('./Users');
-let Movie = require('./Movies');
+let User = require('./db/Users');
+let Movie = require('./db/Movies');
+let Review = require('/db/Reviews');
 
 let app = express();
 app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(passport.initialize());
 
@@ -43,7 +44,10 @@ function getJSONObjectForMovieRequirement(req) {
     return json;
 }
 
-router.post('/signup', function(req, res) {
+/***********************************************************************************************************************
+ * User routing for registering new users and signing in users to receive a JWT token
+ **********************************************************************************************************************/
+router.post('/signup', function (req, res) {
     if (!req.body.username || !req.body.password) {
         res.json({success: false, msg: 'Please include both username and password to signup.'})
     } else {
@@ -51,7 +55,7 @@ router.post('/signup', function(req, res) {
         user.name = req.body.name;
         user.username = req.body.username;
         user.password = req.body.password;
-        user.save(function(err){
+        user.save(function (err) {
             if (err) {
                 if (err.code === 11000)
                     return res.json({success: false, message: "A user with that username already exists."});
@@ -69,18 +73,17 @@ router.post('/signin', function (req, res) {
     userNew.username = req.body.username;
     userNew.password = req.body.password;
 
-    User.findOne({ username: userNew.username }).select('name username password').exec(function (err, user) {
+    User.findOne({username: userNew.username}).select('name username password').exec(function (err, user) {
         if (err) {
             res.send(err);
         }
 
-        user.comparePassword(userNew.password, function(isMatch) {
+        user.comparePassword(userNew.password, function (isMatch) {
             if (isMatch) {
-                let userToken = { id: user.id, username: user.username };
+                let userToken = {id: user.id, username: user.username};
                 let token = jwt.sign(userToken, process.env.SECRET_KEY);
-                res.json ({success: true, token: 'JWT ' + token});
-            }
-            else {
+                res.json({success: true, token: 'JWT ' + token});
+            } else {
                 res.status(401).send({success: false, msg: 'Authentication failed.'});
             }
         });
@@ -93,7 +96,7 @@ router.post('/signin', function (req, res) {
  * *ALL CRUD Operations require JWT Authentication
  **********************************************************************************************************************/
 router.route('/movies')
-    .post(authJwtController.isAuthenticated, function(req, res){ // Create
+    .post(authJwtController.isAuthenticated, function (req, res) { // Create
         console.log("PST| ", req.body);
         res = res.status(200);
 
@@ -105,7 +108,7 @@ router.route('/movies')
         newMovie.actors = req.body.actors;
 
         // Save the movie to mongoDB
-        newMovie.save(function(err){
+        newMovie.save(function (err) {
             if (err) {
                 return res.json(err);
             }
@@ -116,12 +119,12 @@ router.route('/movies')
             res.json(o);
         });
     })
-    .get(authJwtController.isAuthenticated, function(req, res){ // Retrieve
+    .get(authJwtController.isAuthenticated, function (req, res) { // Retrieve
         console.log("GET| ", req.body);
         res = res.status(200);
 
         // search in DB using body as filter
-        Movie.find(req.body).select("title year genre actors").exec(function(err, movies) {
+        Movie.find(req.body).select("title year genre actors").exec(function (err, movies) {
             if (err) {
                 res.send(err);
             }
@@ -132,12 +135,12 @@ router.route('/movies')
             res.json(o);
         });
     })
-    .put(authJwtController.isAuthenticated, function(req, res){ // Update
+    .put(authJwtController.isAuthenticated, function (req, res) { // Update
         console.log("PUT|", req.body);
         res = res.status(200);
 
         // uses body "find" key for query filter and "update" for the update data
-        Movie.findOneAndUpdate(req.body.find,{ $set: req.body.update }).exec(function(err, movies) {
+        Movie.findOneAndUpdate(req.body.find, {$set: req.body.update}).exec(function (err, movies) {
             if (err) {
                 res.send(err);
             }
@@ -147,12 +150,12 @@ router.route('/movies')
             res.json(o);
         });
     })
-    .delete(authJwtController.isAuthenticated, function(req, res) { // Delete
+    .delete(authJwtController.isAuthenticated, function (req, res) { // Delete
         console.log("DEL| ", req.body);
         res = res.status(200);
 
         // deletes single movie based off filter
-        Movie.findOneAndDelete(req.body).exec(function(err, movies) {
+        Movie.findOneAndDelete(req.body).exec(function (err, movies) {
             if (err) {
                 res.send(err);
             }
@@ -162,6 +165,59 @@ router.route('/movies')
             res.json(o);
         });
     });
+/***********************************************************************************************************************
+ * Review routing that supports authentication and CRUD operations to a storage interface.
+ * *ALL CR_D Operations require JWT Authentication
+ **********************************************************************************************************************/
+
+router.route('/reviews')
+    .post(authJwtController.isAuthenticated, function (req, res) { // Create
+        console.log("PST| ", req.body);
+        res = res.status(200);
+
+        Movie.findOne(req.body.movie).select("_id").exec(function (err, movie) {
+            if (err) {
+                res.send(err);
+            }
+
+            // Save the review to mongoDB
+            // newMovie.save(function (err) {
+            //     if (err) {
+            //         return res.json(err);
+            //     }
+            //
+            //     o.message = "POST new review for movie";
+            //     o.success = true;
+            //     res.json(o);
+            // });        // create new movie from request body
+
+
+            let o = getJSONObjectForMovieRequirement(req);
+            o.message = "Movie saved successfully";
+            o.data = movie;
+            o.success = true;
+            res.json(o);
+        });
+    })
+    .get(authJwtController.isAuthenticated, function (req, res) { // Retrieve
+        console.log("GET| ", req.body);
+        res = res.status(200);
+
+        // search in DB using body as filter
+        Movie.findOne(req.body.movie).select("_id").exec(function (err, movie) {
+            if (err) {
+                res.send(err);
+            }
+
+
+            let o = getJSONObjectForMovieRequirement(req);
+            o.message = "Movie saved successfully";
+            o.data = movie;
+            o.success = true;
+            res.json(o);
+        });
+    });
+
 /***********************************************************************************************************************
  ***********************************************************************************************************************/
 

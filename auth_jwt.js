@@ -1,7 +1,7 @@
 let passport = require('passport');
 let JwtStrategy = require('passport-jwt').Strategy;
 let ExtractJwt = require('passport-jwt').ExtractJwt;
-let User = require('./Users');
+let User = require('./db/Users');
 
 let opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme("jwt");
