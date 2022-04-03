@@ -130,7 +130,7 @@ router.route('/movies')
         res = res.status(200);
 
         // Check if user has the reviews field
-        if (req.body.reviews === undefined || req.body.reviews === false) {
+        if (req.body.reviews === undefined) {
             Movie.find(req.body).select("title year genre actors").exec(function (err, movies) {
                 if (err) {
                     res.send(err);
@@ -173,7 +173,7 @@ router.route('/movies')
         res = res.status(200);
 
         // uses body "find" key for query filter and "update" for the update data
-        Movie.findOneAndUpdate(req.body.find, {$set: req.body.update}).exec(function (err, movies) {
+        Movie.findOneAndUpdate(req.body.find, {$set: req.body.update}).exec(function (err) {
             if (err) {
                 res.send(err);
             }
@@ -188,7 +188,7 @@ router.route('/movies')
         res = res.status(200);
 
         // deletes single movie based off filter
-        Movie.findOneAndDelete(req.body).exec(function (err, movies) {
+        Movie.findOneAndDelete(req.body).exec(function (err) {
             if (err) {
                 res.send(err);
             }
