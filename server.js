@@ -205,7 +205,7 @@ router.route('/reviews')
             res.json(o);
         });
     })
-    .get(authJwtController.isAuthenticated, function (req, res) { // Retrieve
+    .get(function (req, res) { // Retrieve
         console.log("GET| ", req.body);
         res = res.status(200);
 
