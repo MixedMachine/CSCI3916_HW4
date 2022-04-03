@@ -14,7 +14,7 @@ let jwt = require('jsonwebtoken');
 let cors = require('cors');
 let User = require('./db/Users');
 let Movie = require('./db/Movies');
-let Review = require('/db/Reviews');
+let Review = require('/db/Reviews')
 
 let app = express();
 app.use(cors());
