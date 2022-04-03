@@ -186,23 +186,23 @@ router.route('/reviews')
             }
 
             let newReview = new Review();
+            newReview.movie = movie._id;
+            newReview.username = "username";
+            newReview.rating = req.body.review.rating;
+            newReview.name = req.body.review.name;
+            newReview.quote = req.body.review.quote;
+            console.log(newReview.toString())
             // Save the review to mongoDB
-            // newMovie.save(function (err) {
-            //     if (err) {
-            //         return res.json(err);
-            //     }
-            //
-            //     o.message = "POST new review for movie";
-            //     o.success = true;
-            //     res.json(o);
-            // });        // create new movie from request body
-
-
-            let o = getJSONObjectForMovieRequirement(req);
-            o.message = "Movie saved successfully";
-            o.data = movie;
-            o.success = true;
-            res.json(o);
+            newReview.save(function (err) {
+                if (err) {
+                    return res.json(err);
+                }
+                console.log("Review saved.")
+                let o = getJSONObjectForMovieRequirement(req);
+                o.message = "POST new review for movie";
+                o.success = true;
+                res.json(o);
+            }); // create new review from request body
         });
     })
     .get(function (req, res) { // Retrieve

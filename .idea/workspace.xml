@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="251a2f6e-0437-4a53-b106-16d4b3db0a89" name="Changes" comment="clean up">
+    <list default="true" id="251a2f6e-0437-4a53-b106-16d4b3db0a89" name="Changes" comment="adding review save functionality">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/Reviews.js" beforeDir="false" afterPath="$PROJECT_DIR$/db/Reviews.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -57,7 +58,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1648781462790</updated>
-      <workItem from="1648992955833" duration="10213000" />
+      <workItem from="1648992955833" duration="13211000" />
     </task>
     <task id="LOCAL-00001" summary="initialize repo">
       <created>1648999997662</created>
@@ -101,7 +102,28 @@
       <option name="project" value="LOCAL" />
       <updated>1649005837816</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="adding connection test">
+      <created>1649007479202</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1649007479202</updated>
+    </task>
+    <task id="LOCAL-00008" summary="clearer with coll connection status">
+      <created>1649007620308</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1649007620308</updated>
+    </task>
+    <task id="LOCAL-00009" summary="removing auth for reviews get">
+      <created>1649008315471</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1649008315471</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -122,6 +144,10 @@
     <MESSAGE value="initialize repo" />
     <MESSAGE value="bug fix" />
     <MESSAGE value="clean up" />
-    <option name="LAST_COMMIT_MESSAGE" value="clean up" />
+    <MESSAGE value="adding connection test" />
+    <MESSAGE value="clearer with coll connection status" />
+    <MESSAGE value="removing auth for reviews get" />
+    <MESSAGE value="adding review save functionality" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding review save functionality" />
   </component>
 </project>

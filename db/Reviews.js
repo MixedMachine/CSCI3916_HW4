@@ -20,7 +20,7 @@ let ReviewSchema = new Schema({
 });
 
 // indexing by title and year
-ReviewSchema.index({movie: 1},{unique: true})
+ReviewSchema.index({movie: 1, username: 1},{unique: true})
 
 //return the model to server
 module.exports = mongoose.model('Review', ReviewSchema);
