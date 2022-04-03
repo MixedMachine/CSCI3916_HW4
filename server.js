@@ -186,7 +186,7 @@ router.route('/reviews')
             }
 
             let newReview = new Review();
-            newReview.movie = movie._id;
+            newReview.movieId = movie._id;
             newReview.username = "username";
             newReview.rating = req.body.review.rating;
             newReview.name = req.body.review.name;
