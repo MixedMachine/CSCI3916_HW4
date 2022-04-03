@@ -1,5 +1,6 @@
 let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
+let ObjectId = mongoose.Types.ObjectId;
 
 mongoose.Promise = global.Promise;
 
@@ -12,7 +13,7 @@ try {
 
 // review schema
 let ReviewSchema = new Schema({
-    movieId: { type: String, required: true },
+    movieId: { type: ObjectId, required: true },
     username: { type: String, required: true },
     rating: { type: Number, required: true },
     name: String,

@@ -210,13 +210,12 @@ router.route('/reviews')
         res = res.status(200);
 
         // search in DB using body as filter
-        Movie.aggregate([
-            { "$addFields": { "movieId": { "$toString": "$_id" }}},
+        Review.aggregate([
             { $lookup:
                     {
                         from: "reviews",
                         localField: "movieId",
-                        foreignField: "movieId",
+                        foreignField: "_id",
                         as: "movie"
                     }
             }]).exec(function (err, reviews) {
