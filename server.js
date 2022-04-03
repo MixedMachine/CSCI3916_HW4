@@ -208,14 +208,14 @@ router.route('/movies')
 
 router.route('/reviews')
     .post(authJwtController.isAuthenticated, function (req, res) { // Create
-        console.log("PST| ", req.body);
+        console.log("PST| ", req.body.movie);
         res = res.status(200);
 
         Movie.findOne(req.body.movie).select("_id").exec(function (err, movie) {
             if (err) {
                 res.send(err);
             }
-
+            console.log("movie| ", movie)
             let newReview = new Review();
             newReview.movieId = movie._id;
             newReview.username = "username";
@@ -224,16 +224,20 @@ router.route('/reviews')
             newReview.quote = req.body.review.quote;
 
             // Save the review to mongoDB
-            newReview.save(function (err) {
-                if (err) {
-                    return res.json(err);
-                }
-
-                let o = getJSONObjectForMovieRequirement(req);
-                o.message = "POST new review for movie";
-                o.success = true;
+            let o = getJSONObjectForMovieRequirement(req);
+            o.message = "POST new review for movie";
+            if (movie != null){
+                newReview.save(function (err) {
+                    if (err) {
+                        return res.json(err);
+                    }
+                    o.success = true;
+                }); // create new review from request body
+            } else {
+                o.status = 400;
+                o.success = false;
                 res.json(o);
-            }); // create new review from request body
+            }
         });
     })
     .get(function (req, res) { // Retrieve
