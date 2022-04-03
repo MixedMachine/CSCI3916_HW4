@@ -191,13 +191,13 @@ router.route('/reviews')
             newReview.rating = req.body.review.rating;
             newReview.name = req.body.review.name;
             newReview.quote = req.body.review.quote;
-            console.log(newReview.toString())
+
             // Save the review to mongoDB
             newReview.save(function (err) {
                 if (err) {
                     return res.json(err);
                 }
-                console.log("Review saved.")
+
                 let o = getJSONObjectForMovieRequirement(req);
                 o.message = "POST new review for movie";
                 o.success = true;
@@ -210,18 +210,24 @@ router.route('/reviews')
         res = res.status(200);
 
         // search in DB using body as filter
-        Movie.findOne(req.body.movie).select("_id").exec(function (err, movie) {
+        Review.aggregate([{ $lookup:
+                    {
+                        from: "movies",
+                        localField: "movie",
+                        foreignField: "_id",
+                        as: "movie"
+                    }
+            }]).select("movie username rating").exec(function (err, reviews) {
             if (err) {
                 res.send(err);
             }
-
-
             let o = getJSONObjectForMovieRequirement(req);
-            o.message = "Movie saved successfully";
-            o.data = movie;
+            o.message = "GET reviews";
+            o.data = reviews;
             o.success = true;
             res.json(o);
         });
+
     });
 
 /***********************************************************************************************************************
