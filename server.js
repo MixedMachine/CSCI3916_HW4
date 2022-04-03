@@ -180,6 +180,7 @@ router.route('/reviews')
                 res.send(err);
             }
 
+            let newReview = new Review();
             // Save the review to mongoDB
             // newMovie.save(function (err) {
             //     if (err) {
