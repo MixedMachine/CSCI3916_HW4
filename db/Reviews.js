@@ -23,4 +23,4 @@ let ReviewSchema = new Schema({
 ReviewSchema.index({movie: 1},{unique: true})
 
 //return the model to server
-module.exports = mongoose.model('Reviews', ReviewSchema);
+module.exports = mongoose.model('Review', ReviewSchema);
