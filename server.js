@@ -238,8 +238,8 @@ router.route('/reviews')
             } else {
                 o.status = 404;
                 o.success = false;
-                res.json(o);
             }
+            res.json(o);
         });
     })
     .get(function (req, res) { // Retrieve
