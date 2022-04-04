@@ -226,8 +226,10 @@ router.route('/reviews')
             // Save the review to mongoDB
             let o = getJSONObjectForMovieRequirement(req);
             o.message = "POST new review for movie";
+            console.log(o.message);
             if (movie != null){
                 newReview.save(function (err) {
+                    console.log(newReview);
                     if (err) {
                         return res.json(err);
                     }
