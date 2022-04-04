@@ -211,35 +211,39 @@ router.route('/reviews')
         console.log("PST| ", req.body.movie);
         res = res.status(200);
 
-        Movie.findOne(req.body.movie).select("_id").exec(function (err, movie) {
-            if (err) {
-                res.send(err);
-            }
-            console.log("movie| ", movie)
-            let newReview = new Review();
-            newReview.movieId = movie._id;
-            newReview.username = "username";
-            newReview.rating = req.body.review.rating;
-            newReview.name = req.body.review.name;
-            newReview.quote = req.body.review.quote;
+        try {
+            Movie.findOne(req.body.movie).select("_id").exec(function (err, movie) {
+                if (err) {
+                    res.send(err);
+                }
+                console.log("movie| ", movie)
+                let newReview = new Review();
+                newReview.movieId = movie._id;
+                newReview.username = "username";
+                newReview.rating = req.body.review.rating;
+                newReview.name = req.body.review.name;
+                newReview.quote = req.body.review.quote;
 
-            // Save the review to mongoDB
-            let o = getJSONObjectForMovieRequirement(req);
-            o.message = "POST new review for movie";
-            if (movie != null){
-                newReview.save(function (err) {
-                    if (err) {
-                        return res.json(err);
-                    }
-                    o.success = true;
+                // Save the review to mongoDB
+                let o = getJSONObjectForMovieRequirement(req);
+                o.message = "POST new review for movie";
+                if (movie != null) {
+                    newReview.save(function (err) {
+                        if (err) {
+                            return res.json(err);
+                        }
+                        o.success = true;
+                        res.json(o);
+                    }); // create new review from request body
+                } else {
+                    o.status = 404;
+                    o.success = false;
                     res.json(o);
-                }); // create new review from request body
-            } else {
-                o.status = 404;
-                o.success = false;
-                res.json(o);
-            }
-        });
+                }
+            });
+        } catch (e) {
+            res.send(e);
+        }
     })
     .get(function (req, res) { // Retrieve
         console.log("GET| ", req.body);
