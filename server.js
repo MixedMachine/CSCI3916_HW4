@@ -203,7 +203,7 @@ router.route('/movies')
     });
 /***********************************************************************************************************************
  * Review routing that supports authentication and CRUD operations to a storage interface.
- * *ALL CR_D Operations require JWT Authentication
+ * *Retrieve Operation requires JWT Authentication
  **********************************************************************************************************************/
 
 router.route('/reviews')
@@ -226,20 +226,19 @@ router.route('/reviews')
             // Save the review to mongoDB
             let o = getJSONObjectForMovieRequirement(req);
             o.message = "POST new review for movie";
-            console.log(o.message);
             if (movie != null){
                 newReview.save(function (err) {
                     if (err) {
-                        console.log(newReview);
                         return res.json(err);
                     }
                     o.success = true;
+                    res.json(o);
                 }); // create new review from request body
             } else {
                 o.status = 404;
                 o.success = false;
+                res.json(o);
             }
-            res.json(o);
         });
     })
     .get(function (req, res) { // Retrieve
