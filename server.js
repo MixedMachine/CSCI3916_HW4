@@ -219,7 +219,7 @@ router.route('/reviews')
                 console.log("user| ", jwt.decode(req.Authorization, {complete: true}));
                 let newReview = new Review();
                 newReview.movieId = movie._id;
-                newReview.username = "username";
+                newReview.username = "testuser";
                 newReview.rating = req.body.review.rating;
                 newReview.name = req.body.review.name;
                 newReview.quote = req.body.review.quote;
