@@ -229,14 +229,14 @@ router.route('/reviews')
             console.log(o.message);
             if (movie != null){
                 newReview.save(function (err) {
-                    console.log(newReview);
                     if (err) {
+                        console.log(newReview);
                         return res.json(err);
                     }
                     o.success = true;
                 }); // create new review from request body
             } else {
-                o.status = 400;
+                o.status = 404;
                 o.success = false;
                 res.json(o);
             }
