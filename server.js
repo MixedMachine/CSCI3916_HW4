@@ -216,7 +216,7 @@ router.route('/reviews')
                 if (err) {
                     res.send(err);
                 }
-                console.log("movie| ", movie)
+                console.log("user| ", jwt.decode(req.Authorization, process.env.SECRET_KEY));
                 let newReview = new Review();
                 newReview.movieId = movie._id;
                 newReview.username = "username";
