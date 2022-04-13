@@ -13,6 +13,8 @@ let cors = require('cors');
 let User = require('./db/Users');
 let Movie = require('./db/Movies');
 let Review = require('./db/Reviews')
+const mongoose = require("mongoose");
+let ObjectId = mongoose.Schema.ObjectId;
 
 let app = express();
 app.use(cors());
@@ -147,6 +149,9 @@ router.route('/movies')
             let movie = req.query;
             // movie.reviews = undefined;
             delete movie.reviews;
+            if (movie.hasOwnProperty("_id")) {
+                movie._id = ObjectId(movie._id);
+            }
             console.log(movie);
             Movie.aggregate([
                 {
