@@ -125,14 +125,14 @@ router.route('/movies')
         });
     })
     .get(authJwtController.isAuthenticated, function (req, res) { // Retrieve
-        console.log("GET| ", req.body);
-        console.log("reviews| ", req.body.reviews)
+        console.log("GET| ", req.searchParams);
+        console.log("reviews| ", req.searchParams.reviews)
         res = res.status(200);
 
         // Check if user has the reviews field
-        if (!req.body.hasOwnProperty("reviews")) {
+        if (!req.searchParams.hasOwnProperty("reviews")) {
             console.log("Not getting reviews");
-            Movie.find(req.body).select("title year genre actors").exec(function (err, movies) {
+            Movie.find(req.searchParams).select("title year genre actors").exec(function (err, movies) {
                 if (err) {
                     res.send(err);
                 }
@@ -145,7 +145,7 @@ router.route('/movies')
         } else {
             console.log("Getting reviews");
             // reviews is not null, so must check if it's true
-            let movie = req.body;
+            let movie = req.searchParams;
             movie.reviews = null;
             Movie.aggregate([
                 {
