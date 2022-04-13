@@ -14,7 +14,7 @@ let User = require('./db/Users');
 let Movie = require('./db/Movies');
 let Review = require('./db/Reviews')
 const mongoose = require("mongoose");
-let ObjectId = mongoose.Schema.ObjectId;
+let ObjectId = mongoose.Types.ObjectId;
 
 let app = express();
 app.use(cors());
