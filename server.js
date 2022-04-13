@@ -145,7 +145,7 @@ router.route('/movies')
             console.log("Getting reviews");
             // reviews is not null, so must check if it's true
             let movie = req.query;
-            movie.reviews = null;
+            movie.reviews = undefined;
             Movie.aggregate([
                 {
                     $match: movie
