@@ -16,7 +16,8 @@ let MovieSchema = new Schema({
     year: Number,
     genre: String,
     actors: [{actorName: String, characterName: String}],
-    imageURL: String
+    imageURL: String,
+    avgRating: Number,
 });
 
 // indexing by title and year

@@ -25,6 +25,8 @@ app.use(passport.initialize());
 
 let router = express.Router();
 
+const getArrayAvg = arr => arr.reduce((a,b) => a + b, 0) / arr.length
+
 function getJSONObjectForMovieRequirement(req) {
     let json = {
         status: 200,
@@ -168,6 +170,12 @@ router.route('/movies')
                 }]).exec(function (err, movies) {
                 if (err) {
                     res.send(err);
+                }
+
+                for (let i = 0; i < movies.length; i++) {
+                    movies[i].avgRating = getArrayAvg(movies[i].reviews.filter(function (review) {
+                        return review.rating;
+                    }));
                 }
                 let o = getJSONObjectForMovieRequirement(req);
                 o.message = "GET movies";
