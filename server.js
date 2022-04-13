@@ -150,7 +150,7 @@ router.route('/movies')
             // movie.reviews = undefined;
             delete movie.reviews;
             if (movie.hasOwnProperty("_id")) {
-                movie._id = ObjectId(movie._id);
+                movie._id = new ObjectId(movie._id);
             }
             console.log(movie);
             Movie.aggregate([
