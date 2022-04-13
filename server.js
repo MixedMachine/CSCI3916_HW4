@@ -177,6 +177,7 @@ router.route('/movies')
                         return review.rating;
                     }));
                 }
+                console.log("Average rating: " + movies);
                 let o = getJSONObjectForMovieRequirement(req);
                 o.message = "GET movies";
                 o.data = movies;
