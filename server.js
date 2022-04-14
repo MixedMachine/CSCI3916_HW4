@@ -173,10 +173,11 @@ router.route('/movies')
                 }
 
                 for (let i = 0; i < movies.length; i++) {
-                    movies[i].avgRating = 5
-                        // movies[i].avgRating = getArrayAvg(movies[i].reviews.filter(function (review) {
-                        // return review.rating;
+                    movies[i].avgRating = movies[i].reviews.filter(function (review) {
+                    // movies[i].avgRating = getArrayAvg(movies[i].reviews.filter(function (review) {
+                        return review.rating;
                     // }));
+                });
                 }
                 console.log("Average rating: " + movies.toString());
                 let o = getJSONObjectForMovieRequirement(req);
