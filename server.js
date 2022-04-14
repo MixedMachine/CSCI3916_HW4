@@ -173,7 +173,7 @@ router.route('/movies')
                 }
 
                 for (let i = 0; i < movies.length; i++) {
-                    movies[i].avgRating = movies[i].reviews.filter(function (review) {
+                    movies[i].avgRating = movies[i].reviews.map(function (review) {
                     // movies[i].avgRating = getArrayAvg(movies[i].reviews.filter(function (review) {
                         return review.rating;
                     // }));
