@@ -234,8 +234,8 @@ router.route('/reviews')
                 const usertoken = req.headers.authorization;
                 const token = usertoken.split(' ');
                 const decoded = jwt.verify(token[1], process.env.SECRET_KEY);
-                console.log("user| ", decoded.username);
-                // console.log("user| ", jwt.decode(req.Authorization, {complete: true}));
+                // console.log("user| ", decoded.username);
+
                 let newReview = new Review();
                 newReview.movieId = movie._id;
                 newReview.username = decoded.username;
