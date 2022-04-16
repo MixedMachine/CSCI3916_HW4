@@ -177,7 +177,9 @@ router.route('/movies')
                         return review.rating;
                     }));
                     console.log(movies[i].avgRating)
-                    if (movies[i].avgRating === null || movies[i].avgRating === undefined) {movies[i].avgRating = 0;}
+                    if (movies[i].avgRating === null ||
+                        movies[i].avgRating === undefined ||
+                        isNaN(movies[i].avgRating)) {movies[i].avgRating = 0;}
                 }
                 let o = getJSONObjectForMovieRequirement(req);
                 o.message = "GET movies";
