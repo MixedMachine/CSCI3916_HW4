@@ -176,7 +176,8 @@ router.route('/movies')
                     movies[i].avgRating = getArrayAvg(movies[i].reviews.map(function (review) {
                         return review.rating;
                     }));
-                    if (movies[i].avgRating === null) {movies[i].avgRating = 0;}
+                    console.log(movies[i].avgRating)
+                    if (movies[i].avgRating === null || movies[i].avgRating === undefined) {movies[i].avgRating = 0;}
                 }
                 let o = getJSONObjectForMovieRequirement(req);
                 o.message = "GET movies";
