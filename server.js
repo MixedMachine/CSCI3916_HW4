@@ -176,7 +176,6 @@ router.route('/movies')
                     movies[i].avgRating = getArrayAvg(movies[i].reviews.map(function (review) {
                         return review.rating;
                     }));
-                    console.log(movies[i].avgRating)
                     if (movies[i].avgRating === null ||
                         movies[i].avgRating === undefined ||
                         isNaN(movies[i].avgRating)) {movies[i].avgRating = 0;}
